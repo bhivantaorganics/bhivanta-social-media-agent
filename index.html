@@ -1,0 +1,30 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bhivanta Social Media Marketing Agent</title><link rel="stylesheet" href="style.css"></head>
+<body><header><h1>Bhivanta Organics — Social Media Marketing Agent</h1><p>Organic Plant Growth Promoter • Better Care. Happier Plants. • Facebook Pages + Instagram Professional</p></header>
+<main>
+<section class="card" id="loginCard"><h2>Owner Login</h2><input id="user" value="owner" placeholder="username"><input id="pass" type="password" placeholder="password"><button onclick="login()">Login</button><p class="small">Password is set by the owner in host env (ADMIN_PASSWORD). Never in Excel, never in chat.</p></section>
+<section class="card hidden" id="app">
+<h2>Single Workflow: Upload Excel/CSV → Connect Accounts → START AGENT</h2>
+<ol>
+<li><b>Step 1 — Upload:</b> Download the <a href="/api/template.csv">sample template CSV</a>. Fill one CSV per sheet (brand, products, prices, claims, faqs, audience, language, frequency, goals, preferences, response_rules, approval), export Excel sheets to CSV, then upload below. Direct .xlsx parsing is NOT in this zero-dep build — see Setup guide.</li>
+<li><b>Step 2 — Connect Accounts (first time, owner tap):</b> Instagram must be Professional in the Instagram app, and a Facebook Page must exist/linked. Then set META_ACCESS_TOKEN, FACEBOOK_PAGE_ID and INSTAGRAM_BUSINESS_ID in host env (never in Excel). The agent cannot take access by itself — you grant it once, then it runs its configured tasks.</li>
+<li><b>Step 3 — START:</b> Click START AGENT. It validates, creates the initial content queue immediately, and starts the hourly worker. If anything is missing, it lists the exact missing step instead of pretending to work.</li>
+</ol>
+<div class="card"><h3>Connect Accounts — ye 3 steps isi agent me solve hote hain</h3><p class="small">Agent token/ID ko encrypted karke rakhta hai, kabhi plaintext me wapas nahi dikhata, kabhi Excel/chat me nahi mangta. Jo tap sirf owner kar sakta hai, wo tap agent bypass nahi karega — wo tap karke, uska result yahan daal do, agent khud unlock ho jayega.</p><button onclick="loadConnect()">Refresh Connect Status</button><pre id="connectStatus"></pre>
+<label>Instagram Business ID <input id="bizId" placeholder="Numeric Business ID after Professional switch"></label>
+<label>Facebook Page ID <input id="pageId" placeholder="Numeric Page ID"></label>
+<label>Meta Access Token <input id="metaToken" type="password" placeholder="Paste full Meta token here only"></label>
+<button onclick="saveConnect()">Save Connect (encrypted)</button><button onclick="verifyConnect()">Verify Token via Graph</button><button onclick="markSwitched()">I switched Instagram to Professional</button><span id="connMsg"></span></div>
+<div><label>Sheet <select id="sheet"><option>brand</option><option>products</option><option>prices</option><option>claims</option><option>faqs</option><option>audience</option><option>language</option><option>frequency</option><option>goals</option><option>preferences</option><option>response_rules</option><option>approval</option></select></label>
+<input type="file" id="file" accept=".csv,.txt"><button onclick="upload()">Upload CSV</button><span id="upMsg"></span></div>
+<div class="controls"><button class="big" onclick="agent('start')">▶ START AGENT</button><button onclick="agent('pause')">⏸ PAUSE</button><button onclick="agent('resume')">▶ RESUME</button><button class="danger" onclick="agent('stop')">⛔ EMERGENCY STOP</button></div>
+<p id="status"></p><pre id="missing"></pre>
+<div class="card"><h3>FINAL — Limited &amp; Free, Daily Routine Only</h3><p class="small">No unlimited, no paid API, spending ₹0. Limits are enforced in code: max 6 drafts/day, max 20 comments/day, max 10 uploads/day, 1 daily summary/day, 1 weekly report/week. Limit reached = work stops that day, resumes tomorrow, never auto-upgrades.</p><button onclick="loadLimits()">Show Today's Limits Usage</button><pre id="limits"></pre><p class="small">Daily routine: 09:00 Morning drafts → 14:00 Midday approval reminder → 19:00 Evening daily summary → Sunday weekly report.</p></div>
+<label><input type="checkbox" id="autoLow" onchange="setAuto()"> Allow low-risk auto-publish (only approved wording, only if accounts + token are connected; promotions/price/new claims still need approval)</label>
+<h3>Content Queue (drafts first — approval before any live publish)</h3><button onclick="loadQueue()">Refresh Queue</button><div id="queue"></div>
+<h3>Comments / Inbox (queued replies — live send needs token + approval)</h3>
+<input id="cPlat" value="Instagram" placeholder="Platform"><input id="cAuthor" placeholder="Author"><input id="cText" placeholder="Comment text" style="width:40%"><button onclick="addComment()">Check Reply</button><div id="comments"></div>
+<h3>Analytics (owner-entered only — no invented numbers)</h3><button onclick="loadAnalytics()">Refresh Analytics</button><button onclick="window.open('/api/reports/weekly.csv')">Download Weekly Report (CSV for Excel)</button><div id="analytics"></div>
+<h3>Daily Summary + Logs</h3><button onclick="loadDaily()">Daily Summary</button><button onclick="loadLogs()">Logs</button><pre id="daily"></pre><pre id="logs"></pre>
+<p class="small"><b>Cannot be fully automated (honest list):</b> trending-audio attachment via API (choose audio in Instagram app), certain inbox functions without Meta permissions, live publishing without a Page + Professional account + token + app review, and continuous 24×7 execution if the host stops/sleeps. Free tiers have quotas — see Setup guide.</p>
+</section></main><script src="app.js"></script></body></html>

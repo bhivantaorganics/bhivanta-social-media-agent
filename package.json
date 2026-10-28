@@ -1,0 +1,1 @@
+{"description":"Bhivanta Social Media Marketing Agent — Facebook Pages + Instagram Professional, Excel/CSV config, approval-gated, free-first, zero paid deps","engines":{"node":">=24"},"main":"server.js","name":"bhivanta-social-media-agent","scripts":{"start":"node server.js","test":"node --test tests/agent.test.js"},"version":"1.0.0"}
